@@ -1,4 +1,5 @@
 import os
+import re
 import google.generativeai as genai
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse
@@ -41,4 +42,30 @@ async def chat(request: ChatRequest):
     
     response = model.generate_content(prompt)
     
-    return {"message": response.text}
+    if is_response_harmful(response.text):
+        return {"message": "I'm sorry, I cannot provide a response to that."}
+    else:
+        return {"message": response.text}
+
+def is_response_harmful(text: str) -> bool:
+    harmful_keywords = [
+        "self-harm", "suicide", "violence", "hate speech", "explicit",
+        "gore", "abuse", "harassment", "threat", "discriminatory"
+    ]
+
+    # NOTE: This is a simplified content moderation filter and is not exhaustive.
+    # A production-ready solution would require a more sophisticated, dedicated
+    # content moderation service or a fine-tuned model to be effective.
+
+    # Normalize text to catch simple variations
+    normalized_text = text.lower()
+    # Remove punctuation
+    normalized_text = re.sub(r'[^\w\s]', '', normalized_text)
+
+    words = normalized_text.split()
+
+    for keyword in harmful_keywords:
+        if keyword in normalized_text:
+            return True
+        # Check for simple misspellings (e.g., v1olence)
+    return False

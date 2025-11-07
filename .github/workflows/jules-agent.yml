@@ -6,7 +6,7 @@ on:
 
 jobs:
   label-added:
-    if: github.event.label.name == 'kind/bug' || github.event.label.name == 'kind/enhancement' || github.event.label.name == 'kind/documentation'
+    if: github.event.label.name == 'kind/bug' || github.event.label.name == 'kind/enhancement' || github.event.label.name == 'kind/documentation' || github.event.label.name == 'bug' || github.event.label.name == 'enhancement' || github.event.label.name == 'documentation'
     
     runs-on: ubuntu-latest
     steps:

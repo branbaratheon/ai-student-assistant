@@ -34,9 +34,13 @@ async def read_index():
 
 @app.post("/api/chat")
 async def chat(request: ChatRequest):
-    with open('database.py', 'r') as f:
-        database_content = f.read()
-    
+    # Sanitize the database content to exclude grades
+    database_content = ""
+    for student_id, student_info in database.STUDENT_DATA.items():
+        database_content += f"Student ID: {student_id}\n"
+        database_content += f"Name: {student_info['name']}\n"
+        database_content += f"Classes: {', '.join(student_info['classes'])}\n\n"
+
     prompt = f"{DEFAULT_SYSTEM_PROMPT}\n\n{database_content}\n\nUser message: {request.message}"
     
     response = model.generate_content(prompt)

@@ -85,7 +85,8 @@ jobs:
           )"
 
           echo '🧪 Merging and de-duplicating issue lists...'
-          ISSUES="$(echo "${UNLABELED_ISSUES}" "${NEEDS_TRIAGE_ISSUES}" | jq -s 'flatten | unique_by(.number)')"
+          # Add the -c (compact) flag to jq
+          ISSUES="$(echo "${UNLABELED_ISSUES}" "${NEEDS_TRIAGE_ISSUES}" | jq -sc 'flatten | unique_by(.number)')"
 
           echo '📝 Setting output for GitHub Actions...'
           echo "issues_to_triage=${ISSUES}" >> "${GITHUB_OUTPUT}"

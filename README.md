@@ -1,3 +1,6 @@
+**⚠️ Note: The GitHub Actions Workflows in this repository no longer functions because the associated GCP project has been shut down.**
+
+
 # Vulnerable AI Student Assistant
 A vulnerable AI app for testing purposes.
 
